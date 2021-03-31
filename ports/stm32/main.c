@@ -83,6 +83,7 @@
 #include "dac.h"
 #include "can.h"
 #include "modnetwork.h"
+#include "counter.h"
 
 #if MICROPY_PY_THREAD
 STATIC pyb_thread_t pyb_thread_main;
@@ -565,7 +566,8 @@ soft_reset:
 
     // run boot.py, if it exists
     // TODO perhaps have pyb.reboot([bootpy]) function to soft-reboot and execute custom boot.py
-    if (state.run_boot_py) {
+    //if (state.run_boot_py) {
+    if (1) {
         const char *boot_py = "boot.py";
         state.last_ret = pyexec_file_if_exists(boot_py);
         if (state.last_ret & PYEXEC_FORCED_EXIT) {
@@ -606,12 +608,16 @@ soft_reset:
     mod_network_init();
     #endif
 
+    // counter
+    counter_init();
+
     // At this point everything is fully configured and initialised.
 
     MICROPY_BOARD_BEFORE_MAIN_PY(&state);
 
     // Run the main script from the current directory.
-    if (state.run_main_py) {
+    //if (state.run_main_py) {
+    if (1) {
         const char *main_py;
         if (MP_STATE_PORT(pyb_config_main) == MP_OBJ_NULL) {
             main_py = "main.py";

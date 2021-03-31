@@ -72,7 +72,7 @@ static mp_uint_t rtc_info;
 STATIC HAL_StatusTypeDef PYB_RTC_Init(RTC_HandleTypeDef *hrtc);
 STATIC void PYB_RTC_MspInit_Kick(RTC_HandleTypeDef *hrtc, bool rtc_use_lse, bool rtc_use_byp);
 STATIC HAL_StatusTypeDef PYB_RTC_MspInit_Finalise(RTC_HandleTypeDef *hrtc);
-STATIC void RTC_CalendarConfig(void);
+// STATIC void RTC_CalendarConfig(void);
 
 #if MICROPY_HW_RTC_USE_LSE || MICROPY_HW_RTC_USE_BYPASS
 STATIC bool rtc_use_lse = true;
@@ -219,7 +219,7 @@ void rtc_init_finalise() {
     rtc_info |= (HAL_GetTick() - rtc_startup_tick) & 0xffff;
 
     // fresh reset; configure RTC Calendar
-    RTC_CalendarConfig();
+    // RTC_CalendarConfig();
     #if defined(STM32L4) || defined(STM32WB)
     if (__HAL_RCC_GET_FLAG(RCC_FLAG_BORRST) != RESET) {
     #else
@@ -449,6 +449,7 @@ STATIC HAL_StatusTypeDef PYB_RTC_MspInit_Finalise(RTC_HandleTypeDef *hrtc) {
     return HAL_OK;
 }
 
+#if 0
 STATIC void RTC_CalendarConfig(void) {
     // set the date to 1st Jan 2015
     RTC_DateTypeDef date;
@@ -476,6 +477,7 @@ STATIC void RTC_CalendarConfig(void) {
         return;
     }
 }
+#endif
 
 uint64_t mp_hal_time_ns(void) {
     uint64_t ns = 0;

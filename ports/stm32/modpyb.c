@@ -35,6 +35,7 @@
 #include "irq.h"
 #include "led.h"
 #include "timer.h"
+#include "counter.h"
 #include "extint.h"
 #include "usrsw.h"
 #include "rng.h"
@@ -201,6 +202,8 @@ STATIC const mp_rom_map_elem_t pyb_module_globals_table[] = {
     #if MICROPY_HW_ENABLE_RTC
     { MP_ROM_QSTR(MP_QSTR_RTC), MP_ROM_PTR(&pyb_rtc_type) },
     #endif
+
+    { MP_ROM_QSTR(MP_QSTR_Counter), MP_ROM_PTR(&pyb_counter_type) },
 
     { MP_ROM_QSTR(MP_QSTR_Pin), MP_ROM_PTR(&pin_type) },
     { MP_ROM_QSTR(MP_QSTR_ExtInt), MP_ROM_PTR(&extint_type) },

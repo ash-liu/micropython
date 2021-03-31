@@ -73,7 +73,7 @@ STATIC mp_obj_t rp2_flash_make_new(const mp_obj_type_t *type, size_t n_args, siz
 
     // Return singleton object.
     return MP_OBJ_FROM_PTR(&rp2_flash_obj);
-}
+} 
 
 STATIC mp_obj_t rp2_flash_readblocks(size_t n_args, const mp_obj_t *args) {
     rp2_flash_obj_t *self = MP_OBJ_TO_PTR(args[0]);

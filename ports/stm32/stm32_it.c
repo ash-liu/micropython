@@ -82,6 +82,7 @@
 #include "dma.h"
 #include "i2c.h"
 #include "usb.h"
+#include "counter.h"
 
 extern void __fatal_error(const char *);
 #if defined(MICROPY_HW_USB_FS)
@@ -646,8 +647,12 @@ void TIM2_IRQHandler(void) {
 }
 
 void TIM3_IRQHandler(void) {
+    // IRQ_ENTER(TIM3_IRQn);
+    // timer_irq_handler(3);
+    // IRQ_EXIT(TIM3_IRQn);
+
     IRQ_ENTER(TIM3_IRQn);
-    timer_irq_handler(3);
+    counter_TIM3_IRQHandler();
     IRQ_EXIT(TIM3_IRQn);
 }
 

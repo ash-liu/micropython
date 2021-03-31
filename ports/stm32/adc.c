@@ -53,16 +53,16 @@
 /* ADC defintions */
 
 #if defined(STM32H7)
-#define ADCx                    (ADC3)
-#define PIN_ADC_MASK            PIN_ADC3
-#define pin_adc_table           pin_adc3
+#define ADCx                    (ADC1)
+#define PIN_ADC_MASK            PIN_ADC1
+#define pin_adc_table           pin_adc1
 #else
 #define ADCx                    (ADC1)
 #define PIN_ADC_MASK            PIN_ADC1
 #define pin_adc_table           pin_adc1
 #endif
 
-#define ADCx_CLK_ENABLE         __HAL_RCC_ADC1_CLK_ENABLE
+#define ADCx_CLK_ENABLE         __HAL_RCC_ADC1_CLK_ENABLE();
 
 #if defined(STM32F0)
 
@@ -142,7 +142,7 @@
     defined(STM32F746xx) || defined(STM32F765xx) || \
     defined(STM32F767xx) || defined(STM32F769xx)
 #define VBAT_DIV (4)
-#elif defined(STM32H743xx)
+#elif defined(STM32H743xx)|| defined(STM32H750xx)
 #define VBAT_DIV (4)
 #elif defined(STM32L432xx) || \
     defined(STM32L451xx) || defined(STM32L452xx) || \
@@ -233,7 +233,7 @@ STATIC void adcx_clock_enable(void) {
     #if defined(STM32F0) || defined(STM32F4) || defined(STM32F7)
     ADCx_CLK_ENABLE();
     #elif defined(STM32H7)
-    __HAL_RCC_ADC3_CLK_ENABLE();
+    __HAL_RCC_ADC12_CLK_ENABLE();
     __HAL_RCC_ADC_CONFIG(RCC_ADCCLKSOURCE_CLKP);
     #elif defined(STM32L4) || defined(STM32WB)
     if (__HAL_RCC_GET_ADC_SOURCE() == RCC_ADCCLKSOURCE_NONE) {

@@ -1,6 +1,6 @@
 # Select the board to build for: if not given on the command line,
 # then default to PYBV10.
-BOARD ?= PYBV10
+BOARD ?= MYH750
 
 # If the build directory is not given, make it reflect the board name.
 BUILD ?= build-$(BOARD)
@@ -31,6 +31,9 @@ FROZEN_MANIFEST ?= boards/manifest.py
 include $(TOP)/py/py.mk
 
 GIT_SUBMODULES = lib/libhydrogen lib/lwip lib/mbedtls lib/mynewt-nimble lib/stm32lib
+ifneq ($(MICROPY_PY_BTREE),none)
+GIT_SUBMODULES += lib/berkeley-db-1.xx
+endif
 
 MCU_SERIES_UPPER = $(shell echo $(MCU_SERIES) | tr '[:lower:]' '[:upper:]')
 CMSIS_MCU_LOWER = $(shell echo $(CMSIS_MCU) | tr '[:upper:]' '[:lower:]')
@@ -66,6 +69,9 @@ INC += -I$(TOP)/$(HAL_DIR)/Inc
 INC += -I$(USBDEV_DIR)/core/inc -I$(USBDEV_DIR)/class/inc
 #INC += -I$(USBHOST_DIR)
 INC += -Ilwip_inc
+ifneq ($(MICROPY_PY_BTREE),none)
+INC += -I$(TOP)/lib/berkeley-db-1.xx/include
+endif
 
 # Basic Cortex-M flags
 CFLAGS_CORTEX_M = -mthumb
@@ -73,7 +79,7 @@ CFLAGS_CORTEX_M = -mthumb
 # Select hardware floating-point support
 SUPPORTS_HARDWARE_FP_SINGLE = 0
 SUPPORTS_HARDWARE_FP_DOUBLE = 0
-ifeq ($(CMSIS_MCU),$(filter $(CMSIS_MCU),STM32F765xx STM32F767xx STM32F769xx STM32H743xx))
+ifeq ($(CMSIS_MCU),$(filter $(CMSIS_MCU),STM32F765xx STM32F767xx STM32F769xx STM32H743xx STM32H750xx))
 CFLAGS_CORTEX_M += -mfpu=fpv5-d16 -mfloat-abi=hard
 SUPPORTS_HARDWARE_FP_SINGLE = 1
 SUPPORTS_HARDWARE_FP_DOUBLE = 1
@@ -260,6 +266,7 @@ endif
 
 EXTMOD_SRC_C += $(addprefix extmod/,\
 	modonewire.c \
+	modbtree.c \
         )
 
 DRIVERS_SRC_C += $(addprefix drivers/,\
@@ -290,6 +297,7 @@ SRC_C += \
 	pybthread.c \
 	factoryreset.c \
 	timer.c \
+	counter.c \
 	led.c \
 	pin.c \
 	pin_defs_stm32.c \
@@ -413,7 +421,7 @@ HAL_SRC_C += $(addprefix $(HAL_DIR)/Src/stm32$(MCU_SERIES)xx_,\
 	)
 endif
 
-ifeq ($(CMSIS_MCU),$(filter $(CMSIS_MCU),STM32H743xx))
+ifeq ($(CMSIS_MCU),$(filter $(CMSIS_MCU),STM32H743xx STM32H750xx))
     HAL_SRC_C += $(addprefix $(HAL_DIR)/Src/stm32$(MCU_SERIES)xx_, hal_fdcan.c)
 else
 ifeq ($(MCU_SERIES),$(filter $(MCU_SERIES),f0 f4 f7 h7 l4))
