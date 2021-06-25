@@ -8,7 +8,7 @@ MOD = btree_$(ARCH)
 SRC = btree_c.c btree_py.py
 
 # Architecture to build for (x86, x64, armv7m, xtensa, xtensawin)
-ARCH = armv7m
+ARCH = armv7emdp
 
 BTREE_DIR = $(MPY_DIR)/lib/berkeley-db-1.xx
 BTREE_DEFS = -D__DBINTERFACE_PRIVATE=1 -Dmpool_error="(void)" -Dabort=abort_ "-Dvirt_fd_t=void*" $(BTREE_DEFS_EXTRA)
